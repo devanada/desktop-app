@@ -7,16 +7,16 @@ import {
 } from "react-icons/si";
 import moment from "moment";
 
-const MENU_TASKBAR =
-  "hover:bg-slate-700 active:bg-slate-800 px-2 flex items-center";
-const MENU_TASKBAR_ITEM = "text-2xl text-white";
-
 interface taskbarProps {
   onClickStart?: () => void;
   onClickChrome?: () => void;
   onClickPShell?: () => void;
   onClickVSCode?: () => void;
 }
+
+const MENU_TASKBAR =
+  "hover:bg-slate-700 active:bg-slate-800 px-2 flex items-center";
+const MENU_TASKBAR_ITEM = "text-2xl text-white";
 
 export default function Taskbar({
   onClickStart,
