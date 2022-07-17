@@ -7,6 +7,7 @@ import {
 import { Rnd } from "react-rnd";
 
 interface windowProps {
+  id: string;
   title: string;
   children: React.ReactNode;
   handleClose?: () => void;
@@ -16,7 +17,13 @@ const MENU_WINDOW =
   "h-full hover:bg-neutral-600 active:bg-slate-800 px-3 flex items-center";
 const MENU_WINDOW_ITEM = "text-xl text-white";
 
-export default function Window({ title, children, handleClose }: windowProps) {
+export default function Window({
+  id,
+  title,
+  children,
+  handleClose,
+}: windowProps) {
+  const [menus] = useState(["vscode", "chrome"]);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [size, setSize] = useState<any>({
     x: 0,
@@ -36,7 +43,8 @@ export default function Window({ title, children, handleClose }: windowProps) {
 
   return (
     <Rnd
-      className="relative border border-black bg-gray-700 flex flex-col"
+      id={id}
+      className="border border-black bg-gray-700 flex flex-col overflow-hidden"
       default={size}
       size={size}
       position={size}
@@ -44,6 +52,15 @@ export default function Window({ title, children, handleClose }: windowProps) {
       minWidth={400}
       enableResizing={!isFullScreen}
       disableDragging={isFullScreen}
+      bounds="parent"
+      onMouseDown={(e: any) => {
+        menus.forEach((menu) => {
+          if (document.getElementById(menu)) {
+            document.getElementById(menu)!.style.zIndex = "0";
+          }
+        });
+        document.getElementById(id)!.style.zIndex = "10";
+      }}
       onDragStop={(e, d) => {
         setSize({ ...size, x: d.x, y: d.y });
       }}

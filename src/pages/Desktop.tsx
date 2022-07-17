@@ -8,7 +8,7 @@ interface windowProps {
 
 function Chrome({ handleClose }: windowProps) {
   return (
-    <Window title="Chrome" handleClose={handleClose}>
+    <Window id="chrome" title="Chrome" handleClose={handleClose}>
       <iframe
         className="w-full h-full"
         title="I1"
@@ -20,7 +20,11 @@ function Chrome({ handleClose }: windowProps) {
 
 function VSCode({ handleClose }: windowProps) {
   return (
-    <Window title="desktop-app - Visual Studio Code" handleClose={handleClose}>
+    <Window
+      id="vscode"
+      title="desktop-app - Visual Studio Code"
+      handleClose={handleClose}
+    >
       <iframe
         className="w-full h-full"
         title="I1"
@@ -35,7 +39,7 @@ export default function Desktop() {
   const [showVSCode, setShowVSCode] = useState(false);
 
   return (
-    <div className="w-full h-screen bg-slate-600 flex flex-col overflow-hidden">
+    <div className="w-full h-screen bg-slate-600 flex flex-col overflow-auto">
       <div className="w-full flex-grow">
         {showChrome && <Chrome handleClose={() => setShowChrome(false)} />}
         {showVSCode && <VSCode handleClose={() => setShowVSCode(false)} />}
