@@ -14,6 +14,13 @@ interface windowProps {
   handleClose?: () => void;
 }
 
+interface sizeType {
+  x: number;
+  y: number;
+  width: number | string;
+  height: number | string;
+}
+
 const MENU_WINDOW =
   "h-full hover:bg-neutral-600 active:bg-slate-800 px-3 flex items-center";
 const MENU_WINDOW_ITEM = "text-xl text-white";
@@ -24,9 +31,9 @@ export default function Window({
   children,
   handleClose,
 }: windowProps) {
-  const [menus] = useState(["vscode", "chrome", "cmd"]);
-  const [isFullScreen, setIsFullScreen] = useState(false);
-  const [size, setSize] = useState<any>({
+  const [menus] = useState<string[]>(["vscode", "chrome", "cmd"]);
+  const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
+  const [size, setSize] = useState<sizeType>({
     x: 0,
     y: 0,
     width: 800,
@@ -42,19 +49,19 @@ export default function Window({
     );
   };
 
-  const handleZindex = () => {
+  const handleZindex = (zIndex: string) => {
     menus.forEach((menu) => {
       if (document.getElementById(menu)) {
         document.getElementById(menu)!.style.zIndex = "0";
       }
     });
-    document.getElementById(id)!.style.zIndex = "10";
+    document.getElementById(id)!.style.zIndex = zIndex !== "" ? zIndex : "10";
   };
 
   return (
     <Rnd
       id={id}
-      className="border border-black bg-gray-700 flex flex-col overflow-hidden max-w-full max-h-full"
+      className="border border-black bg-neutral-800 flex flex-col overflow-hidden max-w-full max-h-full"
       default={size}
       size={size}
       position={size}
@@ -63,7 +70,7 @@ export default function Window({
       enableResizing={!isFullScreen}
       disableDragging={isFullScreen}
       bounds="parent"
-      onMouseDown={() => handleZindex()}
+      onMouseDown={() => handleZindex("")}
       onDragStop={(e, d) => {
         setSize({ ...size, x: d.x, y: d.y });
       }}
@@ -86,7 +93,7 @@ export default function Window({
             className={MENU_WINDOW}
             onClick={() => {
               handleResize(isFullScreen ? false : true);
-              handleZindex();
+              handleZindex("10");
             }}
           >
             {isFullScreen ? (
