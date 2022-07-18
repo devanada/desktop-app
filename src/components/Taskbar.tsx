@@ -10,21 +10,43 @@ import moment from "moment";
 interface taskbarProps {
   onClickStart?: () => void;
   onClickChrome?: () => void;
-  onClickPShell?: () => void;
+  onClickCMD?: () => void;
   onClickVSCode?: () => void;
 }
-
-const MENU_TASKBAR =
-  "hover:bg-slate-700 active:bg-slate-800 px-2 flex items-center";
-const MENU_TASKBAR_ITEM = "text-2xl text-white";
 
 export default function Taskbar({
   onClickStart,
   onClickChrome,
-  onClickPShell,
+  onClickCMD,
   onClickVSCode,
 }: taskbarProps) {
   const [timeNow, setTimeNow] = useState<string>(moment().format("HH:mm A"));
+  const [menus] = useState<any>([
+    {
+      id: "tb-start",
+      icon: SiWindows,
+      title: "Start",
+      onClick: onClickStart,
+    },
+    {
+      id: "tb-chrome",
+      icon: SiGooglechrome,
+      title: "Google Chrome",
+      onClick: onClickChrome,
+    },
+    {
+      id: "tb-cmd",
+      icon: SiPowershell,
+      title: "Command Prompt",
+      onClick: onClickCMD,
+    },
+    {
+      id: "tb-vscode",
+      icon: SiVisualstudiocode,
+      title: "Visual Studio Code",
+      onClick: onClickVSCode,
+    },
+  ]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -34,22 +56,20 @@ export default function Taskbar({
   }, [timeNow]);
 
   return (
-    <div className="sticky bottom-0 bg-black/70 w-full h-8 flex justify-between px-3">
+    <div className="w-full sticky bottom-0 bg-black/70 h-8 flex justify-between px-3">
       <div className="flex gap-3 h-full">
-        <div className={MENU_TASKBAR} onClick={onClickStart}>
-          <SiWindows className={MENU_TASKBAR_ITEM} />
-        </div>
-        <div className={MENU_TASKBAR} onClick={onClickChrome}>
-          <SiGooglechrome className={MENU_TASKBAR_ITEM} />
-        </div>
-        <div className={MENU_TASKBAR} onClick={onClickPShell}>
-          <SiPowershell className={MENU_TASKBAR_ITEM} />
-        </div>
-        <div className={MENU_TASKBAR} onClick={onClickVSCode}>
-          <SiVisualstudiocode className={MENU_TASKBAR_ITEM} />
-        </div>
+        {menus.map((menu: any) => (
+          <div
+            id={menu.id}
+            key={menu.id}
+            className="hover:bg-slate-700 active:bg-slate-800 px-2 flex items-center"
+            onClick={menu.onClick}
+          >
+            <menu.icon className="text-2xl text-white" />
+          </div>
+        ))}
       </div>
-      <div className={MENU_TASKBAR}>
+      <div className="hover:bg-slate-700 active:bg-slate-800 px-2 flex items-center">
         <p className="text-base text-white">{timeNow}</p>
       </div>
     </div>
